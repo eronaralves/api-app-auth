@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  password_hash String?
+  profile_url   String?
+  role          Role     @default(MEMBER)
+  created_at    DateTime @default(now())
+
+  products      Product[]
+  Account       Account[]
+  Notifications Notifications[]
+
+  @@map("users")
+}
+
+model Account {
+  provider String
+  userId   String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, userId])
+  @@map("accounts")
+}
+
+model Notifications {
+  userId   String
+  auth     String
+  endpoint String
+  p256dh   String
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId])
+  @@map("notifications")
+}
+
+model Product {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  image_url   String
+  price       Int
+  user_id     String
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("products")
+}
