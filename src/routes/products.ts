@@ -72,7 +72,7 @@ export async function productRoutes(app: FastifyInstance) {
     
           WebPush.sendNotification(
             pushSubscription,
-            `O produto ${title} foi adicionado. Venha ver!`
+            `O produto ${title} foi adicionado. Venha ver!`,
           )
         }
       })

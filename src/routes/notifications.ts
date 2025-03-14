@@ -5,13 +5,13 @@ import { prisma } from "../lib/prisma";
 import { verifyJWT } from "../middlewares/verify-jwt";
 import 'dotenv/config'
 
-const publicKey = 'BOJ7aqaCUY-Sfo1oF6kh7rmX1KvOZ95ympTF4ZwB98hDkvePBK9V3k5tMJqPDYadx3H8fu1yhXDXUMPaZF7e_UI'
-const privateKey = 'zjvPhYopklhHQluMd8322Qu0SvmbvjLm-8AlYkUy2zw'
+const publicKey = process.env.PUBLIC_KEY
+const privateKey = process.env.PRIVATE_KEY
 
 WebPush.setVapidDetails(
   process.env.BASE_URL!,
-  publicKey,
-  privateKey
+  publicKey!,
+  privateKey!,
 )
 
 export async function notificationsRoutes(app: FastifyInstance) {
