@@ -3,15 +3,15 @@ import type { FastifyInstance } from 'fastify';
 import { z } from "zod";
 import { prisma } from "../lib/prisma";
 import { verifyJWT } from "../middlewares/verify-jwt";
-import 'dotenv/config'
+import { env } from "../env";
 
-const publicKey = process.env.PUBLIC_KEY
-const privateKey = process.env.PRIVATE_KEY
+const publicKey = env.PUBLIC_KEY
+const privateKey = env.PRIVATE_KEY
 
 WebPush.setVapidDetails(
-  process.env.BASE_URL!,
-  publicKey!,
-  privateKey!,
+  env.BASE_URL,
+  publicKey,
+  privateKey,
 )
 
 export async function notificationsRoutes(app: FastifyInstance) {
