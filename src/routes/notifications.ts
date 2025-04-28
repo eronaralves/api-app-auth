@@ -34,25 +34,32 @@ export async function notificationsRoutes(app: FastifyInstance) {
     });
 
     const { subscription } = registerBodySchema.parse(request.body)
-    
-    const notificationWithSameSubscription = await prisma.notifications.findFirst({
+
+    console.log(subscription, 'FF')
+
+    const notificationWithSameSubscription = await prisma.notifications.findUnique({
       where: { 
-        auth: subscription.keys.auth
+        auth: subscription.keys.auth,
       }
     })
+
+    console.log(notificationWithSameSubscription, 'push')
+
 
     if(notificationWithSameSubscription) {
       return reply.status(200).send()
     }
 
-    await prisma.notifications.create({
+    const data = await prisma.notifications.create({
       data: {
-        userId,
+        user_id: userId,
         auth: subscription.keys.auth,
         endpoint: subscription.endpoint,
         p256dh: subscription.keys.p256dh
       }
     })
+
+    console.log(data, 'DAAAAA')
 
     return reply.status(201).send()
   })

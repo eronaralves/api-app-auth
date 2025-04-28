@@ -74,11 +74,11 @@ export async function authRoutes(app: FastifyInstance) {
       name: z.string(),
       email: z.string().email(),
       password: z.string().min(6),
-      profile_url: z.string(),
+      // profile_url: z.string(),
       role: z.enum(['MEMBER', 'ADMIN']).default('MEMBER'),
     });
 
-    const { email, name, password, profile_url, role } =
+    const { email, name, password, role } =
       signInUserBodySchema.parse(request.body);
 
     const userWithSameEmail = await prisma.user.findFirst({ where: { email }});
@@ -106,7 +106,7 @@ export async function authRoutes(app: FastifyInstance) {
         email,
         name,
         password_hash,
-        profile_url,
+        profile_url: 'https://github.com/eronaralves.png',
         role,
       },
     });

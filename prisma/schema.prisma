@@ -45,14 +45,15 @@ model Account {
 }
 
 model Notifications {
-  userId   String
-  auth     String
+  id String @id @default(cuid())
+
+  user_id  String
+  auth     String @unique
   endpoint String
   p256dh   String
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [user_id], references: [id])
 
-  @@unique([userId])
   @@map("notifications")
 }
 

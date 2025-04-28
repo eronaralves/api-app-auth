@@ -46,7 +46,7 @@ export async function productRoutes(app: FastifyInstance) {
         })
       }
 
-      await prisma.product.create({
+      const product = await prisma.product.create({
         data: {
           title,
           description,
@@ -70,10 +70,14 @@ export async function productRoutes(app: FastifyInstance) {
             },
           }
     
-          WebPush.sendNotification(
+          await WebPush.sendNotification(
             pushSubscription,
-            `O produto ${title} foi adicionado. Venha ver!`,
+            JSON.stringify({
+              body: `Nova atividade foi criada, Venha ver!`,
+              url: `https://portal-do-aluno-web.vercel.app/conta/IA-IPS-N1-04-25/praticas/atividades/98194e5f-5015-40ac-a37e-25efdef9d4a6/modulo/f771cf28-7c5a-41b0-8715-70c56b4f6b34`,
+            }),
           )
+          
         }
       })
     }

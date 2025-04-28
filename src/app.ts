@@ -33,6 +33,10 @@ app.register(fastifyJwt, {
 
 app.register(fastifyCookie);
 
+app.register(notificationsRoutes, {
+  prefix: '/push'
+})
+
 app.register(authRoutes, {
   prefix: '/auth',
 });
@@ -45,6 +49,4 @@ app.register(productRoutes, {
   prefix: '/products',
 });
 
-app.register(notificationsRoutes, {
-  prefix: '/push'
-})
+
